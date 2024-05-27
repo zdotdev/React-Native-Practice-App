@@ -17,7 +17,7 @@ async function getProduct (req, res, next) {
   }
 }
 
-router.get('/', async (req, res) => {
+router.get('/products/', async (req, res) => {
   try {
     const product = await productModel.find()
     res.status(200).json(product)
@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.get('/:id', getProduct, async (req, res) => {
+router.get('/products/:id', getProduct, async (req, res) => {
   try {
     res.status(200).json(res.product)
   } catch (err) {
@@ -34,7 +34,7 @@ router.get('/:id', getProduct, async (req, res) => {
   }
 })
 
-router.post('/addProduct', async (req, res) => {
+router.post('/products/addProduct', async (req, res) => {
   const { productName, productPrice, user } = req.body
   let existingUser
   let existingProduct
@@ -69,7 +69,7 @@ router.post('/addProduct', async (req, res) => {
   return res.status(201).json({ product })
 })
 
-router.put('/:id', getProduct, async (req, res) => {
+router.put('/products/:id', getProduct, async (req, res) => {
   try {
     let product = await productModel.findByIdAndUpdate(
       { _id: req.params.id },
@@ -82,7 +82,7 @@ router.put('/:id', getProduct, async (req, res) => {
   }
 })
 
-router.delete('/:id', getProduct, async (req, res) => {
+router.delete('/products/:id', getProduct, async (req, res) => {
   try {
     let product = await productModel
       .findByIdAndDelete(req.params.id)
@@ -95,7 +95,7 @@ router.delete('/:id', getProduct, async (req, res) => {
   }
 })
 
-router.get('/user/:id', async (req, res) => {
+router.get('/products/user/:id', async (req, res) => {
   try {
     let userProducts = await userModel
       .findById(req.params.id)
