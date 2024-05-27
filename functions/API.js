@@ -21,7 +21,7 @@ mongoose
 app.listen(3000, () => {
   console.log('conectado en el puerto 3000')
 })
-// app.use('/.netlify/functions/user', userRoute)
-// app.use('/.netlify/functions/products', productRoute)
-app.use('/.netlify/functions/API', orderRoute)
+app.use('/.netlify/functions/user', userRoute)
+app.use('/.netlify/functions/products', productRoute)
+app.use('/.netlify/functions/orders', orderRoute)
 module.exports.handler = serverless(app)

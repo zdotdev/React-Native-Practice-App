@@ -16,7 +16,7 @@ async function getOrder (req, res, next) {
     return res.status(500).json({ message: err.message })
   }
 }
-router.get('/order/', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const order = await orderModel.find()
     res.status(200).json(order)
@@ -31,7 +31,7 @@ router.get('/order/:id', getOrder, async (req, res) => {
     res.status(500).json({ message: err.message })
   }
 })
-router.post('/order/addOrder', async (req, res) => {
+router.post('/addOrder', async (req, res) => {
   const { orderItems, orderPrice, user } = req.body
   let existingUser
 
@@ -63,7 +63,7 @@ router.post('/order/addOrder', async (req, res) => {
   return res.status(201).json({ order })
 })
 
-router.put('/order/:id', getOrder, async (req, res) => {
+router.put('/:id', getOrder, async (req, res) => {
   try {
     let order = await orderModel.findByIdAndUpdate(
       { _id: req.params },
@@ -75,7 +75,7 @@ router.put('/order/:id', getOrder, async (req, res) => {
     res.status(500).json({ message: err.message })
   }
 })
-router.delete('/order/:id', getOrder, async (req, res) => {
+router.delete('/:id', getOrder, async (req, res) => {
   try {
     let order = await orderModel
       .findByIdAndDelete(req.params.id)
@@ -87,7 +87,7 @@ router.delete('/order/:id', getOrder, async (req, res) => {
     res.status(500).json({ message: err.message })
   }
 })
-router.get('/order/user/:id', async (req, res) => {
+router.get('/user/:id', async (req, res) => {
   try {
     let userOrder = await userModel
       .findById(req.params.id)
