@@ -23,5 +23,5 @@ app.listen(3000, () => {
 })
 // app.use('/.netlify/functions/user', userRoute)
 // app.use('/.netlify/functions/products', productRoute)
-app.use('/.netlify/functions/', orderRoute)
+app.use('/.netlify/functions/API', orderRoute)
 module.exports.handler = serverless(app)
