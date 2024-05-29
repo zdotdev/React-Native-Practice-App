@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: err.message })
   }
 })
-router.get('/order/:id', getOrder, async (req, res) => {
+router.get('/:id', getOrder, async (req, res) => {
   try {
     res.status(200).json(res.order)
   } catch (err) {
