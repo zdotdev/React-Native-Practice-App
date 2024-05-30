@@ -18,7 +18,7 @@ const userSchema = new Schema({
     type: String,
     required: [true, 'Business Name is required']
   },
-  orders: [
+  sales: [
     {
       type: mongoose.Types.ObjectId,
       ref: 'Orders',
