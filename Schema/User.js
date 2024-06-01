@@ -28,6 +28,11 @@ const userSchema = new Schema({
     type: Boolean,
     required: true,
     default: false
+  },
+  businessId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Business',
+    required: true
   }
 })
 export default mongoose.model('User', userSchema)

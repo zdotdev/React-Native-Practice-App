@@ -2,13 +2,6 @@ import mongoose from 'mongoose'
 const { Schema } = mongoose
 
 const businessSchema = new Schema({
-  userId: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: 'User',
-      required: true
-    }
-  ],
   salesId: [
     {
       type: mongoose.Types.ObjectId,
@@ -31,6 +24,11 @@ const businessSchema = new Schema({
   businessOwner: {
     type: String,
     required: true
+  },
+  occupant: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 })
 

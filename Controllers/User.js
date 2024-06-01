@@ -59,12 +59,7 @@ export const signUp = async (req, res) => {
     status
   })
   try {
-    const session = await mongoose.startSession()
-    session.startTransaction()
-    await user.save({ session })
-    existingBusiness.userId.push(user)
-    await existingBusiness.save({ session })
-    await session.commitTransaction()
+    await user.save()
   } catch (err) {
     console.log(err)
   }

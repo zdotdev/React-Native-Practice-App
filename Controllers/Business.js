@@ -1,4 +1,6 @@
 import Business from '../Schema/Business.js'
+import User from '../Schema/User.js'
+import mongoose from 'mongoose'
 
 export const getAllBusinesses = async (req, res) => {
   let businesses
@@ -27,25 +29,34 @@ export const getById = async (req, res) => {
 }
 
 export const addBusiness = async (req, res) => {
-  const { businessName, businessOwner } = req.body
+  const { businessName, businessOwner, userId } = req.body
   let existingBusiness
+  let existingUser
   try {
     existingBusiness = await Business.findOne({ businessName })
+    existingUser = await User.findById(userId)
   } catch (err) {
     console.log(err)
   }
   if (existingBusiness) {
     return res.status(400).json({ message: 'Business already exists' })
   }
+  if (!existingUser) {
+    return res.status(404).json({ message: 'User not found' })
+  }
   const business = new Business({
     businessName,
     businessOwner,
-    userId: [],
     salesId: [],
     productId: []
   })
   try {
-    await business.save()
+    const session = await mongoose.startSession()
+    session.startTransaction()
+    await business.save({ session })
+    existingUser.businessId.push(business)
+    await existingUser.save({ session })
+    await session.commitTransaction()
   } catch (err) {
     console.log(err)
   }
@@ -53,7 +64,7 @@ export const addBusiness = async (req, res) => {
 }
 
 export const updateBusiness = async (req, res) => {
-  const { businessName, businessOwner } = req.body
+  const { businessName, businessOwner, occupant } = req.body
   let business
   try {
     business = await Business.findById(req.params.id)
@@ -65,6 +76,7 @@ export const updateBusiness = async (req, res) => {
   }
   business.businessName = businessName
   business.businessOwner = businessOwner
+  business.occupant = occupant
   try {
     await business.save()
   } catch (err) {
@@ -74,6 +86,7 @@ export const updateBusiness = async (req, res) => {
 }
 export const deleteBusiness = async (req, res) => {
   let business
+  const userId = req.body.userId
   try {
     business = await Business.findById(req.params.id)
   } catch (err) {
@@ -82,8 +95,12 @@ export const deleteBusiness = async (req, res) => {
   if (!business) {
     return res.status(404).json({ message: 'Business not found' })
   }
+  if (!userId) {
+    return res.status(404).json({ message: 'Please provide user id' })
+  }
   try {
-    await business.remove()
+    await User.updateOne({ userId }, { $pull: { businessId: req.params.id } })
+    await Business.deleteOne({ _id: req.params.id })
   } catch (err) {
     console.log(err)
   }

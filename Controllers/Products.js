@@ -94,7 +94,7 @@ export const deleteProduct = async (req, res) => {
     return res.status(404).json({ message: 'Product not found' })
   }
   if (!businessName) {
-    return res.status(404).json({ message: 'Business not found' })
+    return res.status(404).json({ message: 'Please provide business name' })
   }
   try {
     await Business.updateOne(
