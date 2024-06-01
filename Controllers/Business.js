@@ -54,7 +54,7 @@ export const addBusiness = async (req, res) => {
     const session = await mongoose.startSession()
     session.startTransaction()
     await business.save({ session })
-    existingUser.businessId.push(business)
+    existingUser.businessId = business
     await existingUser.save({ session })
     await session.commitTransaction()
   } catch (err) {

@@ -30,22 +30,16 @@ export const getById = async (req, res) => {
 }
 
 export const signUp = async (req, res) => {
-  const { name, email, username, password, role, status, businessName } =
-    req.body
+  const { name, email, username, password, role, status } = req.body
   let existingUser
-  let existingBusiness
 
   try {
     existingUser = await User.findOne({ email })
-    existingBusiness = await Business.findOne({ businessName })
   } catch (err) {
     console.log(err)
   }
   if (existingUser) {
     return res.status(400).json({ message: 'User already exists' })
-  }
-  if (!existingBusiness) {
-    return res.status(404).json({ message: 'Business not found' })
   }
 
   const hashedPassword = bcrypt.hashSync(password)
