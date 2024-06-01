@@ -15,10 +15,6 @@ const salesItemSchema = new Schema(
     pricePerUnit: {
       type: Number,
       required: [true, 'Please provide price per unit']
-    },
-    orderCount: {
-      type: Number,
-      required: [true, 'Please provide order count']
     }
   },
   { _id: false }
