@@ -64,7 +64,7 @@ export const addBusiness = async (req, res) => {
 }
 
 export const updateBusiness = async (req, res) => {
-  const { businessName, businessOwner, occupant } = req.body
+  const { businessName, businessOwner, occupant, spaceNumber } = req.body
   let business
   try {
     business = await Business.findById(req.params.id)
@@ -77,6 +77,7 @@ export const updateBusiness = async (req, res) => {
   business.businessName = businessName
   business.businessOwner = businessOwner
   business.occupant = occupant
+  business.spaceNumber = spaceNumber
   try {
     await business.save()
   } catch (err) {

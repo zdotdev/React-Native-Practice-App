@@ -29,6 +29,12 @@ const businessSchema = new Schema({
     type: Boolean,
     required: true,
     default: false
+  },
+  spaceNumber: {
+    type: Number,
+    required: true,
+    unique: true,
+    default: null
   }
 })
 
