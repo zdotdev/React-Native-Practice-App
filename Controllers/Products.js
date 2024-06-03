@@ -1,6 +1,16 @@
 import Products from '../Schema/Products.js'
 import Business from '../Schema/Business.js'
 import mongoose from 'mongoose'
+import CryptoJS from 'crypto-js'
+import dotenv from 'dotenv'
+dotenv.config()
+
+const key = process.env.KEY
+
+function e (text, secretKey) {
+  const ciphertext = CryptoJS.AES.encrypt(text, secretKey).toString()
+  return ciphertext
+}
 
 export const getAllProducts = async (req, res) => {
   let products
@@ -45,8 +55,8 @@ export const addProduct = async (req, res) => {
     return res.status(404).json({ message: 'Business not found' })
   }
   const product = new Products({
-    productName,
-    productPrice
+    productName: e(productName, key),
+    productPrice: e(productPrice.toString(), key)
   })
   try {
     const session = await mongoose.startSession()
@@ -72,8 +82,8 @@ export const updateProduct = async (req, res) => {
   if (!product) {
     return res.status(404).json({ message: 'Product not found' })
   }
-  product.productName = productName
-  product.productPrice = productPrice
+  product.productName = e(productName, key)
+  product.productPrice = e(productPrice.toString(), key)
   try {
     await product.save()
   } catch (err) {
