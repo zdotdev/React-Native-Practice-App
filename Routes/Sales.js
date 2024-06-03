@@ -11,10 +11,10 @@ import {
 const router = express.Router()
 
 router.get('/', getAllSales)
+router.get('/date', getByDate)
 router.get('/:id', getById)
 router.post('/', addSale)
 router.put('/:id', updateSale)
 router.delete('/:id', deleteSale)
-router.get('/date', getByDate)
 
 export default router

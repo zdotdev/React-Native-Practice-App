@@ -113,7 +113,7 @@ export const getByDate = async (req, res) => {
   const { date } = req.body
   let sales
   try {
-    sales = await Sales.find({ date })
+    sales = await Sales.find({ date: date })
   } catch (err) {
     console.log(err)
   }
