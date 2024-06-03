@@ -107,3 +107,25 @@ export const deleteBusiness = async (req, res) => {
   }
   return res.status(200).json({ message: 'Business deleted' })
 }
+
+export const updateStatus = async (req, res) => {
+  const { occupant, spaceNumber } = req.body
+  let business
+
+  try {
+    business = await Business.findById(req.params.id)
+  } catch (err) {
+    console.log(err)
+  }
+  if (!business) {
+    return res.status(404).json({ message: 'Business not found' })
+  }
+  business.occupant = occupant
+  business.spaceNumber = spaceNumber
+  try {
+    await business.save()
+  } catch (err) {
+    console.log(err)
+  }
+  return res.status(200).json({ message: 'Status updated' })
+}

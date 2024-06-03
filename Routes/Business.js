@@ -4,7 +4,8 @@ import {
   getById,
   addBusiness,
   updateBusiness,
-  deleteBusiness
+  deleteBusiness,
+  updateStatus
 } from '../Controllers/Business.js'
 
 const router = express.Router()
@@ -14,5 +15,6 @@ router.get('/:id', getById)
 router.post('/', addBusiness)
 router.put('/:id', updateBusiness)
 router.delete('/:id', deleteBusiness)
+router.put('/status/:id', updateStatus)
 
 export default router
