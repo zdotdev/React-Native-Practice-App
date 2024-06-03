@@ -5,8 +5,10 @@ import userRoutes from './Routes/User.js'
 import businessRoutes from './Routes/Business.js'
 import productRoutes from './Routes/Products.js'
 import salesRoutes from './Routes/Sales.js'
+import dotenv from 'dotenv'
 
 const app = express()
+dotenv.config()
 
 app.use(express.json())
 app.use(cors())
@@ -14,7 +16,7 @@ app.use(express.urlencoded({ extended: true }))
 
 mongoose
   .connect(
-    `mongodb+srv://admin:admin@userorderproduct.8vfz73x.mongodb.net/?retryWrites=true&w=majority&appName=UserOrderProduct`
+    `mongodb+srv://${process.env.DSADWQEKJASDJKWQ}:${process.env.DSADWQEKJASDJKWQ}@userorderproduct.8vfz73x.mongodb.net/?retryWrites=true&w=majority&appName=UserOrderProduct`
   )
   .then(() => {
     console.log('conectado en el database')
