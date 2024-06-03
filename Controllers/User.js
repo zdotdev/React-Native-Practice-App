@@ -1,6 +1,4 @@
-import mongoose from 'mongoose'
 import User from '../Schema/User.js'
-import Business from '../Schema/Business.js'
 import bcrypt from 'bcryptjs'
 
 export const getAllUsers = async (req, res) => {
