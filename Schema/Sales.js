@@ -22,7 +22,7 @@ const salesItemSchema = new Schema(
 
 const salesSchema = new Schema({
   date: {
-    type: String,
+    type: Number,
     required: true,
     default: null
   },
