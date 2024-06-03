@@ -22,9 +22,14 @@ const salesItemSchema = new Schema(
 
 const salesSchema = new Schema({
   date: {
-    type: Date,
+    type: Number,
     required: true,
-    default: Date.now
+    default: null
+  },
+  time: {
+    type: Number,
+    required: true,
+    default: null
   },
   orderItems: [salesItemSchema],
   totalPrice: {

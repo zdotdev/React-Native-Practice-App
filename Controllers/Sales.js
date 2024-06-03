@@ -1,6 +1,7 @@
 import Sales from '../Schema/Sales.js'
 import Business from '../Schema/Business.js'
 import mongoose from 'mongoose'
+import moment from 'moment'
 
 export const getAllSales = async (req, res) => {
   let sales
@@ -31,6 +32,9 @@ export const getById = async (req, res) => {
 export const addSale = async (req, res) => {
   const { orderItems, totalPrice, businessName } = req.body
   let existingBusiness
+  const time = moment().format('HHmm')
+  const date = moment().format('YYYYDDMM')
+
   try {
     existingBusiness = await Business.findOne({ businessName })
   } catch (err) {
@@ -41,7 +45,9 @@ export const addSale = async (req, res) => {
   }
   const sale = new Sales({
     orderItems,
-    totalPrice
+    totalPrice,
+    date,
+    time
   })
   try {
     const session = await mongoose.startSession()
@@ -101,4 +107,18 @@ export const deleteSale = async (req, res) => {
     console.log(err)
   }
   return res.status(200).json({ message: 'Sale deleted' })
+}
+
+export const getByDate = async (req, res) => {
+  const { date } = req.body
+  let sales
+  try {
+    sales = await Sales.find({ date })
+  } catch (err) {
+    console.log(err)
+  }
+  if (!sales) {
+    return res.status(404).json({ message: 'No sales found' })
+  }
+  return res.status(200).json(sales)
 }
