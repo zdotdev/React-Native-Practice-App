@@ -76,3 +76,23 @@ export const login = async (req, res) => {
   }
   return res.status(200).json({ message: 'Login successful' })
 }
+
+export const updateStatus = async (req, res) => {
+  const { status } = req.body
+  let user
+  try {
+    user = await User.findById(req.params.id)
+  } catch (err) {
+    console.log(err)
+  }
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' })
+  }
+  user.status = status
+  try {
+    await user.save()
+  } catch (err) {
+    console.log(err)
+  }
+  return res.status(200).json({ message: 'Status updated' })
+}
