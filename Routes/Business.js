@@ -13,8 +13,8 @@ const router = express.Router()
 router.get('/', getAllBusinesses)
 router.get('/:id', getById)
 router.post('/', addBusiness)
+router.put('/status/:id', updateStatus)
 router.put('/:id', updateBusiness)
 router.delete('/:id', deleteBusiness)
-router.put('/status/:id', updateStatus)
 
 export default router

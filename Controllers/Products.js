@@ -56,7 +56,7 @@ export const addProduct = async (req, res) => {
   }
   const product = new Products({
     productName: e(productName, key),
-    productPrice: e(productPrice.toString(), key)
+    productPrice: e(productPrice, key)
   })
   try {
     const session = await mongoose.startSession()
@@ -83,7 +83,7 @@ export const updateProduct = async (req, res) => {
     return res.status(404).json({ message: 'Product not found' })
   }
   product.productName = e(productName, key)
-  product.productPrice = e(productPrice.toString(), key)
+  product.productPrice = e(productPrice, key)
   try {
     await product.save()
   } catch (err) {

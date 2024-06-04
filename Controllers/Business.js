@@ -1,6 +1,16 @@
 import Business from '../Schema/Business.js'
 import User from '../Schema/User.js'
 import mongoose from 'mongoose'
+import CryptoJS from 'crypto-js'
+import dotenv from 'dotenv'
+dotenv.config()
+
+const key = process.env.KEY
+
+function e (text, secretKey) {
+  const ciphertext = CryptoJS.AES.encrypt(text, secretKey).toString()
+  return ciphertext
+}
 
 export const getAllBusinesses = async (req, res) => {
   let businesses
@@ -45,8 +55,9 @@ export const addBusiness = async (req, res) => {
     return res.status(404).json({ message: 'User not found' })
   }
   const business = new Business({
-    businessName,
-    businessOwner,
+    businessName: e(businessName, key),
+    businessOwner: e(businessOwner, key),
+    occupant: e('false', key),
     salesId: [],
     productId: []
   })
@@ -74,10 +85,10 @@ export const updateBusiness = async (req, res) => {
   if (!business) {
     return res.status(404).json({ message: 'Business not found' })
   }
-  business.businessName = businessName
-  business.businessOwner = businessOwner
-  business.occupant = occupant
-  business.spaceNumber = spaceNumber
+  business.businessName = e(businessName, key)
+  business.businessOwner = e(businessOwner, key)
+  business.occupant = e(occupant, key)
+  business.spaceNumber = e(spaceNumber, key)
   try {
     await business.save()
   } catch (err) {
@@ -120,8 +131,8 @@ export const updateStatus = async (req, res) => {
   if (!business) {
     return res.status(404).json({ message: 'Business not found' })
   }
-  business.occupant = occupant
-  business.spaceNumber = spaceNumber
+  business.occupant = e(occupant, key)
+  business.spaceNumber = e(spaceNumber, key)
   try {
     await business.save()
   } catch (err) {

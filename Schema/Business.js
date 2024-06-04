@@ -23,16 +23,15 @@ const businessSchema = new Schema({
   },
   businessOwner: {
     type: String,
-    required: true
+    required: [true, 'Please provide business owner']
   },
   occupant: {
-    type: Boolean,
-    required: true,
-    default: false
+    type: String,
+    required: true
   },
   spaceNumber: {
-    type: Number,
-    required: true,
+    type: String,
+    required: false,
     unique: true,
     default: null
   }
