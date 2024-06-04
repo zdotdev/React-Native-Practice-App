@@ -2,6 +2,16 @@ import Sales from '../Schema/Sales.js'
 import Business from '../Schema/Business.js'
 import mongoose from 'mongoose'
 import moment from 'moment'
+import CryptoJS from 'crypto-js'
+import dotenv from 'dotenv'
+dotenv.config()
+
+const key = process.env.KEY
+
+function e (text, secretKey) {
+  const ciphertext = CryptoJS.AES.encrypt(text, secretKey).toString()
+  return ciphertext
+}
 
 export const getAllSales = async (req, res) => {
   let sales
@@ -44,10 +54,14 @@ export const addSale = async (req, res) => {
     return res.status(404).json({ message: 'Business not found' })
   }
   const sale = new Sales({
-    orderItems,
-    totalPrice,
-    date,
-    time
+    orderItems: orderItems.map(item => ({
+      productName: e(item.productName, key),
+      quantity: e(item.quantity, key),
+      pricePerUnit: e(item.pricePerUnit, key)
+    })),
+    totalPrice: e(totalPrice, key),
+    date: e(date.toString(), key),
+    time: e(time.toString(), key)
   })
   try {
     const session = await mongoose.startSession()
@@ -73,8 +87,12 @@ export const updateSale = async (req, res) => {
   if (!sale) {
     return res.status(404).json({ message: 'Sale not found' })
   }
-  sale.orderItems = orderItems
-  sale.totalPrice = totalPrice
+  sale.orderItems = orderItems.map(item => ({
+    productName: e(item.productName, key),
+    quantity: e(item.quantity, key),
+    pricePerUnit: e(item.pricePerUnit, key)
+  }))
+  sale.totalPrice = e(totalPrice, key)
   try {
     await sale.save()
   } catch (err) {
@@ -107,18 +125,4 @@ export const deleteSale = async (req, res) => {
     console.log(err)
   }
   return res.status(200).json({ message: 'Sale deleted' })
-}
-
-export const getByDate = async (req, res) => {
-  const { date } = req.body
-  let sales
-  try {
-    sales = await Sales.find({ date: date })
-  } catch (err) {
-    console.log(err)
-  }
-  if (!sales) {
-    return res.status(404).json({ message: 'No sales found' })
-  }
-  return res.status(200).json(sales)
 }

@@ -8,12 +8,11 @@ const salesItemSchema = new Schema(
       required: [true, 'Please provide product name']
     },
     quantity: {
-      type: Number,
-      required: true,
-      min: [1, 'Quantity must be at least 1']
+      type: String,
+      required: [true, 'Please provide quantity']
     },
     pricePerUnit: {
-      type: Number,
+      type: String,
       required: [true, 'Please provide price per unit']
     }
   },
@@ -22,18 +21,16 @@ const salesItemSchema = new Schema(
 
 const salesSchema = new Schema({
   date: {
-    type: Number,
-    required: true,
-    default: null
+    type: String,
+    required: [true, 'Please provide date']
   },
   time: {
-    type: Number,
-    required: true,
-    default: null
+    type: String,
+    required: [true, 'Please provide time']
   },
   orderItems: [salesItemSchema],
   totalPrice: {
-    type: Number,
+    type: String,
     required: [true, 'Please provide total price']
   }
 })
